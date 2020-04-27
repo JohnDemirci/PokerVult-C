@@ -13,8 +13,9 @@
 //
 //notes
 //	- in this iteration there is no dealer
-// 	- in this iteration they only bet once and thenprogram ends
+// 	- in this iteration they only bet once and thenprogram ends (please let me know if you wnat it to be done differently)
 //	- we have no dealer right now
+//  - The program is currently serial and parallelization will be done later
 //	- needs parallelization
 //	- i might create a CMakeLists.txt file and run the program through cmake-build-debug folder
 //		it requires cmake installed in the device
@@ -115,7 +116,21 @@ int main () {
 	// i might add an if statement if the number is 
 	// greater than 5-7 then i ask the user to pick a lesseer number
 	printf("enter the number of players\n");
+
+
+    // i want the players to bet between 15-55% of their total money
+    // i will get a random value between 15-55 and assign it to the percent variable
+    // then i will take the percentage of the total money and make a bet
 	double percent;
+
+
+    // since a smart person would not bet on a specific number
+    // i have decided to implement a roulette wheel algorithm where i will drag a random
+    // number between 0 - 130
+    // if the number is < 5 then the player will bet on a specific number
+    // otherwise i'll distribute bet times lose to evenly each other
+    // the point is to make the players bet on other things rather than specific numbers more often
+    // the random value between 0-130 will be stored in dummyType
 	int dummyType;
 	// to test my runs i set it equal to 5
 	// i will remove this line later on
@@ -332,10 +347,10 @@ void initTable() {
 		// here is the table
 
 	// table is  done
-	// 		0 G						|
-	// 1 R		2 B	3 R				|
-	// 4 B		5 R	6 B				|
-	// 7 R		8 B	9 R				|  HALF1
+	// 		0 G						
+	// 1 R		2 B	    3 R	       	|
+	// 4 B		5 R     6 B         |
+	// 7 R		8 B	    9 R	       	|  HALF1
 	// 10 B		11 B	12 R		|
 	// 13 B		14 R	15 B		|
 	// 16 R		17 B	18 R		-
