@@ -124,6 +124,16 @@ int main () {
 	double percent;
 
 
+
+    // normally when we call the rand() function we usually get the exact same
+    // numbers eaach tome we run the program from scratch
+    // this line prevents that scenerio from happening so we truly get
+    // a random value
+    srand (time(NULL));
+
+
+
+
     // since a smart person would not bet on a specific number
     // i have decided to implement a roulette wheel algorithm where i will drag a random
     // number between 0 - 130
@@ -136,47 +146,86 @@ int main () {
 	// i will remove this line later on
 	numOfPlayers = 5;
 
-	// the result after the spin
+	// the result after the spin will be assigned to this variable
+    // it is going to be accessed by each thread
 	int spin;
 
+    // i dont want more than 5 players on my table
 	if (numOfPlayers > 5)
 		printf("too many players");
 
-	// creating the player profile see the header file
+	// creating the player profile 
+    // see the header file for more information
 	PLAYER* playerNo = (PLAYER*)malloc(numOfPlayers * sizeof(PLAYER));
 
+    //setting the number of threads we want in the parallel region in the next line
 	omp_set_num_threads(numOfPlayers);
+
+    // go to the parallel region
 	#pragma omp parallel shared(spin)
 	{
+        // each thread will be associated with their ID
+        // we will be getting that ID in the next line
 		int ID = omp_get_thread_num();
+
+        // each player starts ad 100k i might find more creative ways
+        // to come up with some cool shit but for now this is the placeholder
 		playerNo[ID].totalMoney = 100000;
+
+        // entering critical section
+        // if i do not do it with a critical section the output becomes
+        // way too messy
 		#pragma omp critical
 		{
 			printf("\n\nplayer %d deciding how much to bet\n", ID);	
 			sleep(1);
+            // gettin the random value for the percent 
 			percent = (rand() % (55 - 15 + 1)) + 15;
+
+            // betting the money based on the percentage
 			playerNo[ID].moneyBet = (playerNo[ID].totalMoney * percent)/100;
 			printf("player %d preparing %lf to bet\n", ID, playerNo[ID].moneyBet);
-			playerNo[ID].totalMoney -= playerNo[ID].moneyBet;
+			// removing the money from the total money
+            playerNo[ID].totalMoney -= playerNo[ID].moneyBet;
 		}
+        // calling the bet function here so that we can get a random
+        // value and based on that random value the player will make a bet
+        // the letters that has smaler multipliter will have a better chance to be picked
 		playerNo[ID] = bet(playerNo[ID], ID);
 		#pragma omp barrier
 		#pragma omp for
 		for (int i = 3; i > -1; i--) {
-			printf("bets are closing in %d\n", i);
-			sleep(5);
+            #pragma omp critical 
+            {
+                printf("bets are closing soon\n");
+                sleep(1);
+            }
 		}
-		#pragma omp for
-		for (int i = 3 ; i> -1; i++ ) {
-			printf("table is set to spin in %d\n", i);
-			sleep(5);
-			
-		}
+        // i just want this message to be printed only once
+        // so i am putting this job on a single thread only
+        if (ID == 0) {
+            printf("done\n");
+        }
+        //srand (time(NULL));
 		spin = rand() % 37;
-		#pragma omp barrier
-		printf("\n\n%d of %s\n", table[spin].number, table[spin].color);
+        if (ID == 3) {
+            for (int i = 0; i < 3; i++) {
+                printf("spinning\n");
+                sleep(1);
+            }
+            for (int i = 0 ; i < 3; i ++) {
+                printf("slowing down\n");
+                sleep(1);
+            }
+            printf("we got\n");
+            printf("%d of %s\n", table[spin].number, table[spin].color);
+            sleep(2);
+        }
+        #pragma omp barrier
+		
 		#pragma omp critical
-		 switch (playerNo[ID].theType) {
+        {
+            switch (playerNo[ID].theType) {
             case SPECIFIC:
                 if (spin == playerNo[ID].spe) {
                     playerNo[ID] = winner(ID, 36, playerNo[ID]);
@@ -186,21 +235,21 @@ int main () {
                     printf("player %d lost\n", ID);
                     printf("total money left: %lf\n", playerNo[ID].totalMoney);
                     playerNo[ID].moneyBet = 0;
-		    printf("\n\n");
+                    printf("\n\n");
+                    break;
                 }
-                break;
             case ODD:
                 if (spin % 2 != 0) {
-		    // the integer in the function parameter is the multiplier of the bet
+                    // the integer in the function parameter is the multiplier of the bet
                     playerNo[ID] = winner(ID, 2, playerNo[ID]);
                     break;
                 } else {
                     printf("player %d lost\n", ID);
                     playerNo[ID].moneyBet = 0;
                     printf("total money: %lf\n", playerNo[ID].totalMoney);
-		    printf("\n\n");
+                    printf("\n\n");
+                    break;
                 }
-                break;
             case EVEN:
                 if (spin % 2 == 0) {
                     playerNo[ID] = winner(ID, 2, playerNo[ID]);
@@ -209,9 +258,9 @@ int main () {
                     playerNo[ID].moneyBet = 0;
                     printf("player %d lost\n", ID);
                     printf("total money: %lf\n", playerNo[ID].totalMoney);
-		    printf("\n\n");
+                    printf("\n\n");
+                    break;
                 }
-                break;
             case RED:
                 if (strcmp(table[spin].color, "RED") == 0 ) {
                     playerNo[ID] = winner(ID, 2, playerNo[ID]);
@@ -220,9 +269,9 @@ int main () {
                     playerNo[ID].moneyBet = 0;
                     printf("player %d lost\n", ID);
                     printf("total money: %lf\n", playerNo[ID].totalMoney);
-		    printf("\n\n");
+                    printf("\n\n");
+                    break;
                 }
-                break;
             case BLACK:
                 if (strcmp(table[spin].color, "BLACK") == 0 ) {
                     playerNo[ID] = winner(ID, 2, playerNo[ID]);
@@ -231,9 +280,9 @@ int main () {
                     playerNo[ID].moneyBet = 0;
                     printf("player %d lost\n", ID);
                     printf("total money: %lf\n", playerNo[ID].totalMoney);
-		    printf("\n\n");
+                    printf("\n\n");
+                    break;
                 }
-                break;
             case ONE_TWELVE:
                 if (spin > 0 && spin <= 12) {
                     playerNo[ID] = winner(ID, 3, playerNo[ID]);
@@ -242,9 +291,9 @@ int main () {
                     playerNo[ID].moneyBet = 0;
                     printf("player %d lost\n", ID);
                     printf("total money: %lf\n", playerNo[ID].totalMoney);
-			printf("\n\n");
+                    printf("\n\n");
+                    break;
                 }
-                break;
             case TWELVE_TWENTYFOUR:
                 if (spin > 12 && spin <= 24) {
                     playerNo[ID] = winner(ID, 3, playerNo[ID]);
@@ -253,9 +302,9 @@ int main () {
                     playerNo[ID].moneyBet = 0;
                     printf("player %d lost\n", ID);
                     printf("total money: %lf\n", playerNo[ID].totalMoney);
-                	printf("\n\n");
-				}
-                break;
+                    printf("\n\n");
+                    break;
+                }
             case TWENTYFOUR_THIRTYSIX:
                 if (spin > 24 && spin <= 36) {
                     playerNo[ID] = winner(ID, 3, playerNo[ID]);
@@ -264,9 +313,9 @@ int main () {
                     playerNo[ID].moneyBet = 0;
                     printf("player %d lost\n", ID);
                     printf("total money: %lf\n", playerNo[ID].totalMoney);
-                	printf("\n\n");
-				}
-                break;
+                    printf("\n\n");
+                    break;
+                }
             case DOZEN1:
                 if (spin % 3 == 1) {
                     playerNo[ID] = winner(ID, 3, playerNo[ID]);
@@ -275,8 +324,9 @@ int main () {
                     playerNo[ID].moneyBet = 0;
                     printf("player %d lost\n", ID);
                     printf("total money: %lf\n", playerNo[ID].totalMoney);
-                	printf("\n\n");
-				}
+                    printf("\n\n");
+                    break;
+                }
             case DOZEN2:
                 if (spin % 3 == 2) {
                     playerNo[ID] = winner(ID, 3, playerNo[ID]);
@@ -285,29 +335,31 @@ int main () {
                     playerNo[ID].moneyBet = 0;
                     printf("player %d lost\n", ID);
                     printf("total money: %lf\n", playerNo[ID].totalMoney);
-                	printf("\n\n");
-				}
+                    printf("\n\n");
+                    break;
+                }
             case DOZEN3:
                 if (spin % 3 == 0) {
                     playerNo[ID] = winner(ID, 3, playerNo[ID]);
                     break;
                 } else  {
-					playerNo[ID].moneyBet = 0;
+                    playerNo[ID].moneyBet = 0;
                     printf("player %d lost\n", ID);
                     printf("total money: %lf\n", playerNo[ID].totalMoney);
-                	printf("\n\n");
-				}
+                    printf("\n\n");
+                    break;
+                }
             case HALF1:
                 if (spin > 0 && spin <= 18) {
                     playerNo[ID] = winner(ID, 2, playerNo[ID]);
                     break;
                 } else {
-		 playerNo[ID].moneyBet = 0;
+                    playerNo[ID].moneyBet = 0;
                     printf("player %d lost\n", ID);
                     printf("total money: %lf\n", playerNo[ID].totalMoney);
-		printf("\n\n");
-  		}
-                break;
+                    printf("\n\n");
+                    break;
+                }
             case HALF2:
                 if (spin > 18 && spin <= 36) {
                     playerNo[ID] = winner(ID,2, playerNo[ID]);
@@ -317,14 +369,10 @@ int main () {
                     printf("player %d lost\n", ID);
                     printf("total money: %lf\n", playerNo[ID].totalMoney);
                     printf("\n\n");
-		}
-                break;
+                    break;
+                }
+            }
         }
-
-
-		
-
-
 	}
 
 	
@@ -343,15 +391,22 @@ int main () {
 void initTable() {
 	table[0].number = 0;
 	strcpy(table[0].color, "GREEN");
-	// based on the patterns we foudn we fill the table
-	// from 1 ... < 11 all even numbers are black and all odd numbers are red
-	evenBlack(1,11);
-	// from 11 ... < 19 all even numbers are red all odd numbers are black
-	evenRed(11,19);
-	// you get the logic
-	evenBlack(19,29);
-	evenRed(29,37);
 
+    #pragma omp parallel sections
+    {
+        #pragma omp section
+        evenBlack(1,11);
+        // based on the patterns we foudn we fill the table
+        // from 1 ... < 11 all even numbers are black and all odd numbers are red
+        #pragma omp section
+        evenRed(11,19);
+        // from 11 ... < 19 all even numbers are red all odd numbers are black
+        #pragma omp section
+        evenBlack(19,29);
+        // you get the logic
+        #pragma omp section
+        evenRed(29,37);
+    }
 	printf("------------------------------------------------------\n");
 	for (int  i = 0; i < 37; i++) {
 		printf("table[%d].number = %d\n", i, table[i].number);
@@ -398,17 +453,21 @@ void evenBlack(int lower, int upper) {
 	// this one is just a debug statement
 	// will get rid of the print statement later
 	printf("\nyou are in evenblack function\n");
-	for (int i = lower; i < upper; i++) {
-		// if i % 2 = 0 which means it is an even number
-		// so we set it as black
-		// if not then we set it as red
-		if (i % 2 == 0) {	
-			strcpy(table[i].color, "BLACK");
-		} else {
-			strcpy(table[i].color, "RED");
-		}
-		table[i].number = i;
-	}
+    #pragma omp parallel
+    {
+        #pragma omp for
+        for (int i = lower; i < upper; i++) {
+        // if i % 2 = 0 which means it is an even number
+        // so we set it as black
+        // if not then we set it as red
+        if (i % 2 == 0) {   
+            strcpy(table[i].color, "BLACK");
+        } else {
+            strcpy(table[i].color, "RED");
+        }
+        table[i].number = i;
+        }
+    }
 }
 
 
@@ -416,17 +475,21 @@ void evenRed(int lower, int upper) {
 	// this one is just a debug statement
 	// will get rid of the print statement later
 	printf("\nyou are in evenblack function\n");
-	for (int i = lower; i < upper; i++) {
-		// if i % 2 = 0 which means it is an even number
-		// so we set it as black
-		// if not then we set it as red
-		if (i % 2 == 0) {	
-			strcpy(table[i].color, "RED");
-		} else {
-			strcpy(table[i].color, "BLACK");
-		}
-		table[i].number = i;
-	}
+    #pragma omp parallel
+    {
+        #pragma omp for
+        for (int i = lower; i < upper; i++) {
+        // if i % 2 = 0 which means it is an even number
+        // so we set it as black
+        // if not then we set it as red
+        if (i % 2 == 0) {   
+            strcpy(table[i].color, "RED");
+        } else {
+            strcpy(table[i].color, "BLACK");
+        }
+        table[i].number = i;
+        }
+    }
 }
 
 
