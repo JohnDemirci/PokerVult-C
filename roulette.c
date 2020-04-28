@@ -136,41 +136,47 @@ int main () {
 	// i will remove this line later on
 	numOfPlayers = 5;
 
+	// the result after the spin
+	int spin;
+
+	if (numOfPlayers > 5)
+		printf("too many players");
+
 	// creating the player profile see the header file
 	PLAYER* playerNo = (PLAYER*)malloc(numOfPlayers * sizeof(PLAYER));
 
-	
-	for (int ID = 0; ID < numOfPlayers; ID++) {
+	omp_set_num_threads(numOfPlayers);
+	#pragma omp parallel shared(spin)
+	{
+		int ID = omp_get_thread_num();
 		playerNo[ID].totalMoney = 100000;
-		printf("\n\nplayer num %d deciding how much to bet\n", ID);
-		sleep(2);
-		percent = (rand() %(55 - 15 + 1)) + 15;
-		playerNo[ID].moneyBet = (playerNo[ID].totalMoney * percent)/100;
-        	printf("player %d preparing %lf to bet\n", ID, playerNo[ID].moneyBet);
-        	playerNo[ID].totalMoney -= playerNo[ID].moneyBet;
+		#pragma omp critical
+		{
+			printf("\n\nplayer %d deciding how much to bet\n", ID);	
+			sleep(1);
+			percent = (rand() % (55 - 15 + 1)) + 15;
+			playerNo[ID].moneyBet = (playerNo[ID].totalMoney * percent)/100;
+			printf("player %d preparing %lf to bet\n", ID, playerNo[ID].moneyBet);
+			playerNo[ID].totalMoney -= playerNo[ID].moneyBet;
+		}
 		playerNo[ID] = bet(playerNo[ID], ID);
-	}
-
-
-	for (int i = 3; i > -1; i--) {
-		printf("bets are closing in %d\n",i);
-		sleep(1);
-	}
-
-	for (int i = 3; i < -1; i--) {
-		printf("table is set to spin in %d\n",i);
-		sleep(1);
-	}
-	// spinning the roulette wheel
-	int spin = rand() % 37;
-
-
-	// spin result printed
-	printf("\n\n%d of %s\n", table[spin].number, table[spin].color);
-	
-	// after we get the results we analyze it based in the bets
-	for (int ID = 0; ID < numOfPlayers; ID++) {
-	    switch (playerNo[ID].theType) {
+		#pragma omp barrier
+		#pragma omp for
+		for (int i = 3; i > -1; i--) {
+			printf("bets are closing in %d\n", i);
+			sleep(5);
+		}
+		#pragma omp for
+		for (int i = 3 ; i> -1; i++ ) {
+			printf("table is set to spin in %d\n", i);
+			sleep(5);
+			
+		}
+		spin = rand() % 37;
+		#pragma omp barrier
+		printf("\n\n%d of %s\n", table[spin].number, table[spin].color);
+		#pragma omp critical
+		 switch (playerNo[ID].theType) {
             case SPECIFIC:
                 if (spin == playerNo[ID].spe) {
                     playerNo[ID] = winner(ID, 36, playerNo[ID]);
@@ -201,7 +207,7 @@ int main () {
                     break;
                 } else {
                     playerNo[ID].moneyBet = 0;
-                    printf("player %d lost", ID);
+                    printf("player %d lost\n", ID);
                     printf("total money: %lf\n", playerNo[ID].totalMoney);
 		    printf("\n\n");
                 }
@@ -248,7 +254,7 @@ int main () {
                     printf("player %d lost\n", ID);
                     printf("total money: %lf\n", playerNo[ID].totalMoney);
                 	printf("\n\n");
-		}
+				}
                 break;
             case TWENTYFOUR_THIRTYSIX:
                 if (spin > 24 && spin <= 36) {
@@ -259,7 +265,7 @@ int main () {
                     printf("player %d lost\n", ID);
                     printf("total money: %lf\n", playerNo[ID].totalMoney);
                 	printf("\n\n");
-		}
+				}
                 break;
             case DOZEN1:
                 if (spin % 3 == 1) {
@@ -270,7 +276,7 @@ int main () {
                     printf("player %d lost\n", ID);
                     printf("total money: %lf\n", playerNo[ID].totalMoney);
                 	printf("\n\n");
-		}
+				}
             case DOZEN2:
                 if (spin % 3 == 2) {
                     playerNo[ID] = winner(ID, 3, playerNo[ID]);
@@ -280,24 +286,24 @@ int main () {
                     printf("player %d lost\n", ID);
                     printf("total money: %lf\n", playerNo[ID].totalMoney);
                 	printf("\n\n");
-		}
+				}
             case DOZEN3:
                 if (spin % 3 == 0) {
                     playerNo[ID] = winner(ID, 3, playerNo[ID]);
                     break;
                 } else  {
-		playerNo[ID].moneyBet = 0;
+					playerNo[ID].moneyBet = 0;
                     printf("player %d lost\n", ID);
                     printf("total money: %lf\n", playerNo[ID].totalMoney);
                 	printf("\n\n");
-		}
+				}
             case HALF1:
                 if (spin > 0 && spin <= 18) {
                     playerNo[ID] = winner(ID, 2, playerNo[ID]);
                     break;
                 } else {
 		 playerNo[ID].moneyBet = 0;
-                    printf("player %d lost", ID);
+                    printf("player %d lost\n", ID);
                     printf("total money: %lf\n", playerNo[ID].totalMoney);
 		printf("\n\n");
   		}
@@ -308,13 +314,22 @@ int main () {
                     break;
                 } else {
                     playerNo[ID].moneyBet = 0;
-                    printf("player %d lost", ID);
+                    printf("player %d lost\n", ID);
                     printf("total money: %lf\n", playerNo[ID].totalMoney);
                     printf("\n\n");
 		}
                 break;
         }
+
+
+		
+
+
 	}
+
+	
+	// spin result printed
+	
 	// free memory
 	free(playerNo);
 	free(table);
@@ -348,9 +363,9 @@ void initTable() {
 
 	// table is  done
 	// 		0 G						
-	// 1 R		2 B	    3 R	       	|
-	// 4 B		5 R     6 B         |
-	// 7 R		8 B	    9 R	       	|  HALF1
+	// 1 R		2 B	 	3 R	       	|
+	// 4 B		5 R 	6 B         |
+	// 7 R		8 B	 	9 R	       	|  HALF1
 	// 10 B		11 B	12 R		|
 	// 13 B		14 R	15 B		|
 	// 16 R		17 B	18 R		-
