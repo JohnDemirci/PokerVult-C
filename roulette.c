@@ -131,7 +131,7 @@ int main () {
     // a random value
     srand (time(NULL));
 
-
+    char decision;
 
 
     // since a smart person would not bet on a specific number
@@ -160,6 +160,12 @@ int main () {
 
     //setting the number of threads we want in the parallel region in the next line
 	omp_set_num_threads(numOfPlayers);
+    // each player starts ad 100k i might find more creative ways
+    // to come up with some cool shit but for now this is the placeholder
+    for (int ID = 0; ID < numOfPlayers; ID++) {
+        playerNo[ID].totalMoney = 100000;
+    }
+    restart:
 
     // go to the parallel region
 	#pragma omp parallel shared(spin)
@@ -168,9 +174,7 @@ int main () {
         // we will be getting that ID in the next line
 		int ID = omp_get_thread_num();
 
-        // each player starts ad 100k i might find more creative ways
-        // to come up with some cool shit but for now this is the placeholder
-		playerNo[ID].totalMoney = 100000;
+        
 
         // entering critical section
         // if i do not do it with a critical section the output becomes
@@ -375,8 +379,16 @@ int main () {
         }
 	}
 
-	
-	// spin result printed
+	printf("would you like to fo again ? [y/n]\n");
+    
+    scanf("%c", &decision);
+    switch (decision){
+        case 'y':
+            goto restart;
+            break;
+        case 'n':
+            break;
+    }
 	
 	// free memory
 	free(playerNo);
