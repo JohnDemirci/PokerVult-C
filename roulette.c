@@ -131,7 +131,7 @@ int main () {
     // a random value
     srand (time(NULL));
 
-    char decision;
+    char dec = 'y';
 
 
     // since a smart person would not bet on a specific number
@@ -158,60 +158,64 @@ int main () {
     // see the header file for more information
 	PLAYER* playerNo = (PLAYER*)malloc(numOfPlayers * sizeof(PLAYER));
 
-    //setting the number of threads we want in the parallel region in the next line
-	omp_set_num_threads(numOfPlayers);
+    
     // each player starts ad 100k i might find more creative ways
     // to come up with some cool shit but for now this is the placeholder
     for (int ID = 0; ID < numOfPlayers; ID++) {
         playerNo[ID].totalMoney = 100000;
     }
-    restart:
 
     // go to the parallel region
-	#pragma omp parallel shared(spin)
-	{
+
+
+
+    while (1) {
+        //setting the number of threads we want in the parallel region in the next line
+        omp_set_num_threads(numOfPlayers);
+        #pragma omp parallel shared(spin)
+        {
         // each thread will be associated with their ID
         // we will be getting that ID in the next line
-		int ID = omp_get_thread_num();
+        int ID = omp_get_thread_num();
 
         
 
         // entering critical section
         // if i do not do it with a critical section the output becomes
         // way too messy
-		#pragma omp critical
-		{
-			printf("\n\nplayer %d deciding how much to bet\n", ID);	
-			sleep(1);
+        #pragma omp critical
+        {
+            printf("\n\nplayer %d deciding how much to bet\n", ID); 
+            sleep(1);
             // gettin the random value for the percent 
-			percent = (rand() % (55 - 15 + 1)) + 15;
+            percent = (rand() % (55 - 15 + 1)) + 15;
 
             // betting the money based on the percentage
-			playerNo[ID].moneyBet = (playerNo[ID].totalMoney * percent)/100;
-			printf("player %d preparing %lf to bet\n", ID, playerNo[ID].moneyBet);
-			// removing the money from the total money
+            playerNo[ID].moneyBet = (playerNo[ID].totalMoney * percent)/100;
+            printf("player %d preparing %lf to bet\n", ID, playerNo[ID].moneyBet);
+            // removing the money from the total money
             playerNo[ID].totalMoney -= playerNo[ID].moneyBet;
-		}
+        }
         // calling the bet function here so that we can get a random
         // value and based on that random value the player will make a bet
         // the letters that has smaler multipliter will have a better chance to be picked
-		playerNo[ID] = bet(playerNo[ID], ID);
-		#pragma omp barrier
-		#pragma omp for
-		for (int i = 3; i > -1; i--) {
+        playerNo[ID] = bet(playerNo[ID], ID);
+        #pragma omp barrier
+        #pragma omp for
+        for (int i = 3; i > -1; i--) {
             #pragma omp critical 
             {
                 printf("bets are closing soon\n");
                 sleep(1);
             }
-		}
+        }
         // i just want this message to be printed only once
         // so i am putting this job on a single thread only
         if (ID == 0) {
             printf("done\n");
         }
         //srand (time(NULL));
-		spin = rand() % 37;
+        spin = rand() % 37;
         if (ID == 3) {
             for (int i = 0; i < 3; i++) {
                 printf("spinning\n");
@@ -226,8 +230,8 @@ int main () {
             sleep(2);
         }
         #pragma omp barrier
-		
-		#pragma omp critical
+        
+        #pragma omp critical
         {
             switch (playerNo[ID].theType) {
             case SPECIFIC:
@@ -377,17 +381,13 @@ int main () {
                 }
             }
         }
-	}
-
-	printf("would you like to fo again ? [y/n]\n");
+    }
     
-    scanf("%c", &decision);
-    switch (decision){
-        case 'y':
-            goto restart;
-            break;
-        case 'n':
-            break;
+    printf("would you like to fo again ? [y/n]\n");
+    scanf("%c", &dec);
+
+    if (dec != 'y')
+        break;
     }
 	
 	// free memory
