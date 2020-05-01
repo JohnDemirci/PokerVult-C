@@ -141,8 +141,13 @@ int main () {
     // the point is to make the players bet on other things rather than specific numbers more often
     // the random value between 0-130 will be stored in dummyType
 	int dummyType;
-	// to test my runs i set it equal to 5
-	// i will remove this line later on
+
+
+	// i want to have more randomness in this program
+    // since we know that not all roulette tables are filled
+    // maybe this casino is not very popular
+    // we will get a random number of players and then
+    // increment it by 1 so that we will get the dealer thread
 	numOfPlayers = (rand() % (5 - 1 + 1)) + 1;
     // we might increment the number of players by 1 
     //  so that we can have a thread for the dealer
@@ -156,6 +161,11 @@ int main () {
 	if (numOfPlayers > 5)
 		printf("too many players");
 
+
+    // i have a file of names and i will read those names
+    // and then assign the names to a 2 dimentional char array
+    // aftwewards i will randomy pick names to assign t threads
+    // here i am allocating memory for the two dimentional array
     char** playerNames = (char**)malloc(numOfPlayers* sizeof(char*));
     for (int i = 0; i < numOfPlayers; i++) {
         playerNames[i] = (char*)malloc(MAX_NAME_LENGTH * sizeof(char));
@@ -166,15 +176,24 @@ int main () {
 
     // this si for reading names from a file
     FILE *file = fopen("people.txt", "r");
-
+    // looping for each thread
     for (int i = 0; i < numOfPlayers; i++) {
+        // count is the word index in the file
         int count = 0;
+        // i will ask for a random name from 0-100
+        // that random number is the index of the name i will choose
+        // from the file
         int randomName = rand() % 100;
+        // buffer for the word that is going to be read in the file
         char buffer[20];
+        // reading the file word by word
         while( fscanf(file, "%s", buffer) != EOF ) {
+            // if the random name index == count
+            // then i found the name i randomly checked
             if (randomName == count) {
+                // copying that name from buffer to the playerNames
                 strcpy(playerNames[i], buffer);
-                // printf("%s\n", nameBuffer);
+                // this line will go back to the beginning of the file
                 fseek(file, 0, SEEK_SET);
                 break;
             }
@@ -182,6 +201,7 @@ int main () {
             count++;
         }
     }
+    // we are done with the file pointer
     fclose(file);
 
 
@@ -217,16 +237,25 @@ int main () {
         if (ID != 0) {
             #pragma omp critical
             {
-                playerNo[ID].name = (char*)malloc(MAX_NAME_LENGTH * sizeof(char*));
+                // allocating space for the name 
+                playerNo[ID].name = (char*)malloc(sizeof(playerNames[ID]));
                 printf("-------player registration-------\n");
                 printf("please enter your name: \n");
                 strcpy(playerNo[ID].name, playerNames[ID]);
+                printf("%s\n", playerNo[ID].name);
+                // easter egg for the memes
+                // if the name is karen then she's asking to speak to the manager
                 if (strcmp(playerNo[ID].name, "Karen") == 0) {
                     printf("Manager is curently unavaiable\n");
                 }
+
+                // if the customer asks for more than 10,000,000 worth of chips we deny them and
+                // send them back to here with the goto statement
                 tryagain:
                 printf("\nhello %s how much worth of chips would you like?\n", playerNo[ID].name);
-                playerNo[ID].totalMoney = (rand() % (13000000 - 100000 + 1)) + 100000;
+                double chips = (rand() % (13000000 - 100000 + 1)) + 100000;
+                playerNo[ID].totalMoney = chips;
+                printf("%lf\n", playerNo[ID].totalMoney);
                 if (playerNo[ID].totalMoney > 10000000) {
                     printf("you cannot bet more than 10,000,000\n");
                     printf("try again\n");
@@ -286,11 +315,11 @@ int main () {
         //srand (time(NULL));
         spin = rand() % 37;
         if (ID == 3) {
-            for (int i = 0; i < 3; i++) {
+            for (int i = 0; i < 2; i++) {
                 printf("spinning\n");
                 sleep(1);
             }
-            for (int i = 0 ; i < 3; i ++) {
+            for (int i = 0 ; i < 2; i ++) {
                 printf("slowing down\n");
                 sleep(1);
             }
@@ -302,156 +331,156 @@ int main () {
         if (ID != 0) {
             #pragma omp critical
             {
-            switch (playerNo[ID].theType) {
-            case SPECIFIC:
-                if (spin == playerNo[ID].spe) {
-                    playerNo[ID] = winner(ID, 36, playerNo[ID]);
-                    playerNo[ID].spe = -1;
-                    break;
-                } else {
-                    printf("%s lost\n", playerNo[ID].name);
-                    printf("total money left: %lf\n", playerNo[ID].totalMoney);
-                    playerNo[ID].moneyBet = 0;
-                    printf("\n\n");
-                    break;
-                }
-            case ODD:
-                if (spin % 2 != 0) {
-                    // the integer in the function parameter is the multiplier of the bet
-                    playerNo[ID] = winner(ID, 2, playerNo[ID]);
-                    break;
-                } else {
-                    printf("%s lost\n", playerNo[ID].name);
-                    playerNo[ID].moneyBet = 0;
-                    printf("total money: %lf\n", playerNo[ID].totalMoney);
-                    printf("\n\n");
-                    break;
-                }
-            case EVEN:
-                if (spin % 2 == 0) {
-                    playerNo[ID] = winner(ID, 2, playerNo[ID]);
-                    break;
-                } else {
-                    playerNo[ID].moneyBet = 0;
-                    printf("%s lost\n", playerNo[ID].name);
-                    printf("total money: %lf\n", playerNo[ID].totalMoney);
-                    printf("\n\n");
-                    break;
-                }
-            case RED:
-                if (strcmp(table[spin].color, "RED") == 0 ) {
-                    playerNo[ID] = winner(ID, 2, playerNo[ID]);
-                    break;
-                } else {
-                    playerNo[ID].moneyBet = 0;
-                    printf("%s lost\n", playerNo[ID].name);
-                    printf("total money: %lf\n", playerNo[ID].totalMoney);
-                    printf("\n\n");
-                    break;
-                }
-            case BLACK:
-                if (strcmp(table[spin].color, "BLACK") == 0 ) {
-                    playerNo[ID] = winner(ID, 2, playerNo[ID]);
-                    break;
-                } else {
-                    playerNo[ID].moneyBet = 0;
-                    printf("%s lost\n", playerNo[ID].name);
-                    printf("total money: %lf\n", playerNo[ID].totalMoney);
-                    printf("\n\n");
-                    break;
-                }
-            case ONE_TWELVE:
-                if (spin > 0 && spin <= 12) {
-                    playerNo[ID] = winner(ID, 3, playerNo[ID]);
-                    break;
-                } else {
-                    playerNo[ID].moneyBet = 0;
-                    printf("%s lost\n", playerNo[ID].name);
-                    printf("total money: %lf\n", playerNo[ID].totalMoney);
-                    printf("\n\n");
-                    break;
-                }
-            case TWELVE_TWENTYFOUR:
-                if (spin > 12 && spin <= 24) {
-                    playerNo[ID] = winner(ID, 3, playerNo[ID]);
-                    break;
-                } else {
-                    playerNo[ID].moneyBet = 0;
-                    printf("%s lost\n", playerNo[ID].name);
-                    printf("total money: %lf\n", playerNo[ID].totalMoney);
-                    printf("\n\n");
-                    break;
-                }
-            case TWENTYFOUR_THIRTYSIX:
-                if (spin > 24 && spin <= 36) {
-                    playerNo[ID] = winner(ID, 3, playerNo[ID]);
-                    break;
-                } else {
-                    playerNo[ID].moneyBet = 0;
-                    printf("%s lost\n", playerNo[ID].name);
-                    printf("total money: %lf\n", playerNo[ID].totalMoney);
-                    printf("\n\n");
-                    break;
-                }
-            case DOZEN1:
-                if (spin % 3 == 1) {
-                    playerNo[ID] = winner(ID, 3, playerNo[ID]);
-                    break;
-                } else  {
-                    playerNo[ID].moneyBet = 0;
-                    printf("%s lost\n", playerNo[ID].name);
-                    printf("total money: %lf\n", playerNo[ID].totalMoney);
-                    printf("\n\n");
-                    break;
-                }
-            case DOZEN2:
-                if (spin % 3 == 2) {
-                    playerNo[ID] = winner(ID, 3, playerNo[ID]);
-                    break;
-                } else  {
-                    playerNo[ID].moneyBet = 0;
-                    printf("%s lost\n", playerNo[ID].name);
-                    printf("total money: %lf\n", playerNo[ID].totalMoney);
-                    printf("\n\n");
-                    break;
-                }
-            case DOZEN3:
-                if (spin % 3 == 0) {
-                    playerNo[ID] = winner(ID, 3, playerNo[ID]);
-                    break;
-                } else  {
-                    playerNo[ID].moneyBet = 0;
-                    printf("%s lost\n", playerNo[ID].name);
-                    printf("total money: %lf\n", playerNo[ID].totalMoney);
-                    printf("\n\n");
-                    break;
-                }
-            case HALF1:
-                if (spin > 0 && spin <= 18) {
-                    playerNo[ID] = winner(ID, 2, playerNo[ID]);
-                    break;
-                } else {
-                    playerNo[ID].moneyBet = 0;
-                    printf("%s lost\n", playerNo[ID].name);
-                    printf("total money: %lf\n", playerNo[ID].totalMoney);
-                    printf("\n\n");
-                    break;
-                }
-            case HALF2:
-                if (spin > 18 && spin <= 36) {
-                    playerNo[ID] = winner(ID,2, playerNo[ID]);
-                    break;
-                } else {
-                    playerNo[ID].moneyBet = 0;
-                    printf("%s lost\n", playerNo[ID].name);
-                    printf("total money: %lf\n", playerNo[ID].totalMoney);
-                    printf("\n\n");
-                    break;
+                switch (playerNo[ID].theType) {
+                case SPECIFIC:
+                    if (spin == playerNo[ID].spe) {
+                        playerNo[ID] = winner(ID, 36, playerNo[ID]);
+                        playerNo[ID].spe = -1;
+                        break;
+                    } else {
+                        printf("%s lost\n", playerNo[ID].name);
+                        printf("total money left: %lf\n", playerNo[ID].totalMoney);
+                        playerNo[ID].moneyBet = 0;
+                        printf("\n\n");
+                        break;
+                    }
+                case ODD:
+                    if (spin % 2 != 0) {
+                        // the integer in the function parameter is the multiplier of the bet
+                        playerNo[ID] = winner(ID, 2, playerNo[ID]);
+                        break;
+                    } else {
+                        printf("%s lost\n", playerNo[ID].name);
+                        playerNo[ID].moneyBet = 0;
+                        printf("total money: %lf\n", playerNo[ID].totalMoney);
+                        printf("\n\n");
+                        break;
+                    }
+                case EVEN:
+                    if (spin % 2 == 0) {
+                        playerNo[ID] = winner(ID, 2, playerNo[ID]);
+                        break;
+                    } else {
+                        playerNo[ID].moneyBet = 0;
+                        printf("%s lost\n", playerNo[ID].name);
+                        printf("total money: %lf\n", playerNo[ID].totalMoney);
+                        printf("\n\n");
+                        break;
+                    }
+                case RED:
+                    if (strcmp(table[spin].color, "RED") == 0 ) {
+                        playerNo[ID] = winner(ID, 2, playerNo[ID]);
+                        break;
+                    } else {
+                        playerNo[ID].moneyBet = 0;
+                        printf("%s lost\n", playerNo[ID].name);
+                        printf("total money: %lf\n", playerNo[ID].totalMoney);
+                        printf("\n\n");
+                        break;
+                    }
+                case BLACK:
+                    if (strcmp(table[spin].color, "BLACK") == 0 ) {
+                        playerNo[ID] = winner(ID, 2, playerNo[ID]);
+                        break;
+                    } else {
+                        playerNo[ID].moneyBet = 0;
+                        printf("%s lost\n", playerNo[ID].name);
+                        printf("total money: %lf\n", playerNo[ID].totalMoney);
+                        printf("\n\n");
+                        break;
+                    }
+                case ONE_TWELVE:
+                    if (spin > 0 && spin <= 12) {
+                        playerNo[ID] = winner(ID, 3, playerNo[ID]);
+                        break;
+                    } else {
+                        playerNo[ID].moneyBet = 0;
+                        printf("%s lost\n", playerNo[ID].name);
+                        printf("total money: %lf\n", playerNo[ID].totalMoney);
+                        printf("\n\n");
+                        break;
+                    }
+                case TWELVE_TWENTYFOUR:
+                    if (spin > 12 && spin <= 24) {
+                        playerNo[ID] = winner(ID, 3, playerNo[ID]);
+                        break;
+                    } else {
+                        playerNo[ID].moneyBet = 0;
+                        printf("%s lost\n", playerNo[ID].name);
+                        printf("total money: %lf\n", playerNo[ID].totalMoney);
+                        printf("\n\n");
+                        break;
+                    }
+                case TWENTYFOUR_THIRTYSIX:
+                    if (spin > 24 && spin <= 36) {
+                        playerNo[ID] = winner(ID, 3, playerNo[ID]);
+                        break;
+                    } else {
+                        playerNo[ID].moneyBet = 0;
+                        printf("%s lost\n", playerNo[ID].name);
+                        printf("total money: %lf\n", playerNo[ID].totalMoney);
+                        printf("\n\n");
+                        break;
+                    }
+                case DOZEN1:
+                    if (spin % 3 == 1) {
+                        playerNo[ID] = winner(ID, 3, playerNo[ID]);
+                        break;
+                    } else  {
+                        playerNo[ID].moneyBet = 0;
+                        printf("%s lost\n", playerNo[ID].name);
+                        printf("total money: %lf\n", playerNo[ID].totalMoney);
+                        printf("\n\n");
+                        break;
+                    }
+                case DOZEN2:
+                    if (spin % 3 == 2) {
+                        playerNo[ID] = winner(ID, 3, playerNo[ID]);
+                        break;
+                    } else  {
+                        playerNo[ID].moneyBet = 0;
+                        printf("%s lost\n", playerNo[ID].name);
+                        printf("total money: %lf\n", playerNo[ID].totalMoney);
+                        printf("\n\n");
+                        break;
+                    }
+                case DOZEN3:
+                    if (spin % 3 == 0) {
+                        playerNo[ID] = winner(ID, 3, playerNo[ID]);
+                        break;
+                    } else  {
+                        playerNo[ID].moneyBet = 0;
+                        printf("%s lost\n", playerNo[ID].name);
+                        printf("total money: %lf\n", playerNo[ID].totalMoney);
+                        printf("\n\n");
+                        break;
+                    }
+                case HALF1:
+                    if (spin > 0 && spin <= 18) {
+                        playerNo[ID] = winner(ID, 2, playerNo[ID]);
+                        break;
+                    } else {
+                        playerNo[ID].moneyBet = 0;
+                        printf("%s lost\n", playerNo[ID].name);
+                        printf("total money: %lf\n", playerNo[ID].totalMoney);
+                        printf("\n\n");
+                        break;
+                    }
+                case HALF2:
+                    if (spin > 18 && spin <= 36) {
+                        playerNo[ID] = winner(ID,2, playerNo[ID]);
+                        break;
+                    } else {
+                        playerNo[ID].moneyBet = 0;
+                        printf("%s lost\n", playerNo[ID].name);
+                        printf("total money: %lf\n", playerNo[ID].totalMoney);
+                        printf("\n\n");
+                        break;
+                    }
                 }
             }
         }
     }
-        }
 
     
     printf("would you like to fo again ? [y/n]\n");
