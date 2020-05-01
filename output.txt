@@ -81,137 +81,103 @@ table[35].color = BLACK
 table[36].number = 36
 table[36].color = RED
 enter the number of players
+too many players-------player registration-------
+please enter your name: 
+
+hello Khloe how much worth of chips would you like?
+GRANTED!
+-------player registration-------
+please enter your name: 
+
+hello Bruce how much worth of chips would you like?
+GRANTED!
+-------player registration-------
+please enter your name: 
+
+hello Samra how much worth of chips would you like?
+you cannot bet more than 10,000,000
+try again
+
+hello Samra how much worth of chips would you like?
+GRANTED!
+-------player registration-------
+please enter your name: 
+
+hello Marcin how much worth of chips would you like?
+you cannot bet more than 10,000,000
+try again
+
+hello Marcin how much worth of chips would you like?
+you cannot bet more than 10,000,000
+try again
+
+hello Marcin how much worth of chips would you like?
+GRANTED!
+-------player registration-------
+please enter your name: 
+
+hello Kelsi how much worth of chips would you like?
+GRANTED!
 
 
-player 1 deciding how much to bet
-player 1 preparing 46000.000000 to bet
+Marcin deciding how much to bet
+Marcin is preparing 4193418.910000 to bet
+player 4 betting on ODDS
+
+
+Kelsi deciding how much to bet
+Kelsi is preparing 332904.950000 to bet
 player 1 betting on BLACKS
 
 
-player 0 deciding how much to bet
-player 0 preparing 18000.000000 to bet
-player 0 betting on 13-24
+Samra deciding how much to bet
+Samra is preparing 876172.580000 to bet
+player 2 betting on BLACKS
 
 
-player 4 deciding how much to bet
-player 4 preparing 46000.000000 to bet
-player 4 betting on HALF2
-
-
-player 3 deciding how much to bet
-player 3 preparing 29000.000000 to bet
-player 3 betting on REDS
-
-
-player 2 deciding how much to bet
-player 2 preparing 31000.000000 to bet
-player 2 betting on 25-36
-bets are closing soon
-bets are closing soon
-bets are closing soon
-bets are closing soon
-done
-spinning
-spinning
-spinning
-slowing down
-slowing down
-slowing down
-we got
-32 of RED
-player 3 win
-and won
-58000.000000
-total money: 129000.000000
-
-
-player 0 lost
-total money: 82000.000000
-
-
-player 4 win
-and won
-92000.000000
-total money: 146000.000000
-
-
-player 2 win
-and won
-62000.000000
-total money: 162000.000000
-
-
-player 1 lost
-total money: 54000.000000
-
-
-would you like to fo again ? [y/n]
-y
-
-
-player 0 deciding how much to bet
-player 0 preparing 43460.000000 to bet
-player 0 betting on REDS
-
-
-player 4 deciding how much to bet
-player 4 preparing 77380.000000 to bet
-player 4 betting on DOZEN1
-
-
-player 2 deciding how much to bet
-player 2 preparing 25920.000000 to bet
-player 2 betting on REDS
-
-
-player 1 deciding how much to bet
-player 1 preparing 10800.000000 to bet
-player 1 betting on HALF2
-
-
-player 3 deciding how much to bet
-player 3 preparing 58050.000000 to bet
+Khloe deciding how much to bet
+Khloe is preparing 2367030.700000 to bet
 player 3 betting on 25-36
+
+
+Bruce deciding how much to bet
+Bruce is preparing 1648013.700000 to bet
+player 5 betting on ODDS
 bets are closing soon
 bets are closing soon
 bets are closing soon
 bets are closing soon
-done
 spinning
+done
 spinning
 spinning
 slowing down
 slowing down
 slowing down
 we got
-23 of RED
-player 0 win
-and won
-86920.000000
-total money: 125460.000000
+16 of RED
+Marcin lost
+total money: 5558718.090000
 
 
-player 4 lost
-total money: 68620.000000
+Kelsi lost
+total money: 618252.050000
 
 
-player 2 win
-and won
-51840.000000
-total money: 187920.000000
+Samra lost
+total money: 2933273.420000
 
 
-player 1 win
-and won
-21600.000000
-total money: 64800.000000
+Khloe lost
+total money: 4594824.300000
 
 
-player 3 lost
-total money: 70950.000000
+Bruce lost
+total money: 2184576.300000
 
 
 would you like to fo again ? [y/n]
+n
 
-time spent 36.922925
+time spent 25.979987
 

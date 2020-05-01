@@ -162,28 +162,24 @@ int main () {
     }
 
 
+
+
     // this si for reading names from a file
     FILE *file = fopen("people.txt", "r");
-    int lineNumber;
-    int count = 0;
-    if (file != NULL) {
-        
-        for (int i = 1; i < numOfPlayers; i++) {
-            lineNumber = rand() % 100;
-            char* line = (char*)malloc(25 * sizeof(char)); /* or other suitable maximum line size */
-            while (fgets(line, sizeof line, file) != NULL) /* read a line */
-            {
-                if (count == lineNumber)
-                {
-                    strcpy(playerNames[i],line);
-                    fseek(file, 0, SEEK_SET);
-                    break;
-                }
-                else
-                {
-                    count++;
-                }
+
+    for (int i = 0; i < numOfPlayers; i++) {
+        int count = 0;
+        int randomName = rand() % 100;
+        char buffer[20];
+        while( fscanf(file, "%s", buffer) != EOF ) {
+            if (randomName == count) {
+                strcpy(playerNames[i], buffer);
+                // printf("%s\n", nameBuffer);
+                fseek(file, 0, SEEK_SET);
+                break;
             }
+            // printf("%s\n", buffer);
+            count++;
         }
     }
     fclose(file);
@@ -526,7 +522,7 @@ void initTable() {
 // if the player wins the bet then we run this function
 // the mult is the mmultiplier of the bet type
 PLAYER winner (int ID, int mult, PLAYER playerNo) {
-    printf("player %d win\nand won\n", ID);
+    printf("%s wins\nand won\n", playerNo.name);
     printf("%lf\n", playerNo.moneyBet * 2);
     playerNo.totalMoney = playerNo.totalMoney + (playerNo.moneyBet * mult);
     printf("total money: %lf\n", playerNo.totalMoney);
