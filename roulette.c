@@ -1,7 +1,4 @@
 #include "roulette.h"
-
-
-
 // serial code needs to parallelized
 //
 // compilation
@@ -90,12 +87,14 @@ PLAYER bet (PLAYER playerNo, int ID) {
             playerNo.theType = HALF2;
             printf("player %d betting on HALF2\n", ID);
         }
+    sleep(1);
 	return playerNo;
 }
 
 
 
 int main () {
+
 	// starting timer to check the performance
 	double t0 = omp_get_wtime();
 	// number of players i might increment it by 1 for the 
@@ -144,7 +143,10 @@ int main () {
 	int dummyType;
 	// to test my runs i set it equal to 5
 	// i will remove this line later on
-	numOfPlayers = 5;
+	numOfPlayers = (rand() % (5 - 1 + 1)) + 1;
+    // we might increment the number of players by 1 
+    //  so that we can have a thread for the dealer
+    numOfPlayers++;
 
 	// the result after the spin will be assigned to this variable
     // it is going to be accessed by each thread
@@ -154,16 +156,54 @@ int main () {
 	if (numOfPlayers > 5)
 		printf("too many players");
 
+    char** playerNames = (char**)malloc(numOfPlayers* sizeof(char*));
+    for (int i = 0; i < numOfPlayers; i++) {
+        playerNames[i] = (char*)malloc(MAX_NAME_LENGTH * sizeof(char));
+    }
+
+
+    // this si for reading names from a file
+    FILE *file = fopen("people.txt", "r");
+    int lineNumber;
+    int count = 0;
+    if (file != NULL) {
+        
+        for (int i = 1; i < numOfPlayers; i++) {
+            lineNumber = rand() % 100;
+            char* line = (char*)malloc(25 * sizeof(char)); /* or other suitable maximum line size */
+            while (fgets(line, sizeof line, file) != NULL) /* read a line */
+            {
+                if (count == lineNumber)
+                {
+                    strcpy(playerNames[i],line);
+                    fseek(file, 0, SEEK_SET);
+                    break;
+                }
+                else
+                {
+                    count++;
+                }
+            }
+        }
+    }
+    fclose(file);
+
+
 	// creating the player profile 
     // see the header file for more information
 	PLAYER* playerNo = (PLAYER*)malloc(numOfPlayers * sizeof(PLAYER));
 
+    // casino money
+    // i decided thread # 0 to be the casino
+    playerNo[0].totalMoney = 10000000000000;
+    playerNo[0].name = (char*)malloc(MAX_NAME_LENGTH * sizeof(char*));
+    strcpy(playerNo[0].name, "DEALER");
     
     // each player starts ad 100k i might find more creative ways
     // to come up with some cool shit but for now this is the placeholder
-    for (int ID = 0; ID < numOfPlayers; ID++) {
-        playerNo[ID].totalMoney = 100000;
-    }
+    //for (int ID = 1; ID < numOfPlayers; ID++) {
+    //    playerNo[ID].totalMoney = 100000;
+    //}
 
     // go to the parallel region
 
@@ -178,28 +218,61 @@ int main () {
         // we will be getting that ID in the next line
         int ID = omp_get_thread_num();
 
-        
+        if (ID != 0) {
+            #pragma omp critical
+            {
+                playerNo[ID].name = (char*)malloc(MAX_NAME_LENGTH * sizeof(char*));
+                printf("-------player registration-------\n");
+                printf("please enter your name: \n");
+                strcpy(playerNo[ID].name, playerNames[ID]);
+                if (strcmp(playerNo[ID].name, "Karen") == 0) {
+                    printf("Manager is curently unavaiable\n");
+                }
+                tryagain:
+                printf("\nhello %s how much worth of chips would you like?\n", playerNo[ID].name);
+                playerNo[ID].totalMoney = (rand() % (13000000 - 100000 + 1)) + 100000;
+                if (playerNo[ID].totalMoney > 10000000) {
+                    printf("you cannot bet more than 10,000,000\n");
+                    printf("try again\n");
+                    playerNo[ID].totalMoney = 0;
+                    goto tryagain;
+                } else {
+                    printf("GRANTED!\n");
+                    // casino is giving the chips
+                    playerNo[0].totalMoney -= playerNo[ID].totalMoney;
+                }
+            }
+        }
+        #pragma omp barrier
 
         // entering critical section
         // if i do not do it with a critical section the output becomes
         // way too messy
-        #pragma omp critical
+        if (ID != 0)
         {
-            printf("\n\nplayer %d deciding how much to bet\n", ID); 
-            sleep(1);
-            // gettin the random value for the percent 
-            percent = (rand() % (55 - 15 + 1)) + 15;
-
-            // betting the money based on the percentage
-            playerNo[ID].moneyBet = (playerNo[ID].totalMoney * percent)/100;
-            printf("player %d preparing %lf to bet\n", ID, playerNo[ID].moneyBet);
-            // removing the money from the total money
-            playerNo[ID].totalMoney -= playerNo[ID].moneyBet;
+            #pragma omp critical
+            {
+                printf("\n\n%s deciding how much to bet\n", playerNo[ID].name); 
+                sleep(1);
+                // gettin the random value for the percent 
+                percent = (rand() % (55 - 15 + 1)) + 15;
+                // betting the money based on the percentage
+                playerNo[ID].moneyBet = (playerNo[ID].totalMoney * percent)/100;
+                printf("%s is preparing %lf to bet\n", playerNo[ID].name, playerNo[ID].moneyBet);
+                sleep(1);
+                // removing the money from the total money
+                playerNo[ID].totalMoney -= playerNo[ID].moneyBet;
+            }
         }
+
+
         // calling the bet function here so that we can get a random
         // value and based on that random value the player will make a bet
         // the letters that has smaler multipliter will have a better chance to be picked
-        playerNo[ID] = bet(playerNo[ID], ID);
+
+        if (ID != 0)
+            playerNo[ID] = bet(playerNo[ID], ID);
+
         #pragma omp barrier
         #pragma omp for
         for (int i = 3; i > -1; i--) {
@@ -230,9 +303,9 @@ int main () {
             sleep(2);
         }
         #pragma omp barrier
-        
-        #pragma omp critical
-        {
+        if (ID != 0) {
+            #pragma omp critical
+            {
             switch (playerNo[ID].theType) {
             case SPECIFIC:
                 if (spin == playerNo[ID].spe) {
@@ -240,7 +313,7 @@ int main () {
                     playerNo[ID].spe = -1;
                     break;
                 } else {
-                    printf("player %d lost\n", ID);
+                    printf("%s lost\n", playerNo[ID].name);
                     printf("total money left: %lf\n", playerNo[ID].totalMoney);
                     playerNo[ID].moneyBet = 0;
                     printf("\n\n");
@@ -252,7 +325,7 @@ int main () {
                     playerNo[ID] = winner(ID, 2, playerNo[ID]);
                     break;
                 } else {
-                    printf("player %d lost\n", ID);
+                    printf("%s lost\n", playerNo[ID].name);
                     playerNo[ID].moneyBet = 0;
                     printf("total money: %lf\n", playerNo[ID].totalMoney);
                     printf("\n\n");
@@ -264,7 +337,7 @@ int main () {
                     break;
                 } else {
                     playerNo[ID].moneyBet = 0;
-                    printf("player %d lost\n", ID);
+                    printf("%s lost\n", playerNo[ID].name);
                     printf("total money: %lf\n", playerNo[ID].totalMoney);
                     printf("\n\n");
                     break;
@@ -275,7 +348,7 @@ int main () {
                     break;
                 } else {
                     playerNo[ID].moneyBet = 0;
-                    printf("player %d lost\n", ID);
+                    printf("%s lost\n", playerNo[ID].name);
                     printf("total money: %lf\n", playerNo[ID].totalMoney);
                     printf("\n\n");
                     break;
@@ -286,7 +359,7 @@ int main () {
                     break;
                 } else {
                     playerNo[ID].moneyBet = 0;
-                    printf("player %d lost\n", ID);
+                    printf("%s lost\n", playerNo[ID].name);
                     printf("total money: %lf\n", playerNo[ID].totalMoney);
                     printf("\n\n");
                     break;
@@ -297,7 +370,7 @@ int main () {
                     break;
                 } else {
                     playerNo[ID].moneyBet = 0;
-                    printf("player %d lost\n", ID);
+                    printf("%s lost\n", playerNo[ID].name);
                     printf("total money: %lf\n", playerNo[ID].totalMoney);
                     printf("\n\n");
                     break;
@@ -308,7 +381,7 @@ int main () {
                     break;
                 } else {
                     playerNo[ID].moneyBet = 0;
-                    printf("player %d lost\n", ID);
+                    printf("%s lost\n", playerNo[ID].name);
                     printf("total money: %lf\n", playerNo[ID].totalMoney);
                     printf("\n\n");
                     break;
@@ -319,7 +392,7 @@ int main () {
                     break;
                 } else {
                     playerNo[ID].moneyBet = 0;
-                    printf("player %d lost\n", ID);
+                    printf("%s lost\n", playerNo[ID].name);
                     printf("total money: %lf\n", playerNo[ID].totalMoney);
                     printf("\n\n");
                     break;
@@ -330,7 +403,7 @@ int main () {
                     break;
                 } else  {
                     playerNo[ID].moneyBet = 0;
-                    printf("player %d lost\n", ID);
+                    printf("%s lost\n", playerNo[ID].name);
                     printf("total money: %lf\n", playerNo[ID].totalMoney);
                     printf("\n\n");
                     break;
@@ -341,7 +414,7 @@ int main () {
                     break;
                 } else  {
                     playerNo[ID].moneyBet = 0;
-                    printf("player %d lost\n", ID);
+                    printf("%s lost\n", playerNo[ID].name);
                     printf("total money: %lf\n", playerNo[ID].totalMoney);
                     printf("\n\n");
                     break;
@@ -352,7 +425,7 @@ int main () {
                     break;
                 } else  {
                     playerNo[ID].moneyBet = 0;
-                    printf("player %d lost\n", ID);
+                    printf("%s lost\n", playerNo[ID].name);
                     printf("total money: %lf\n", playerNo[ID].totalMoney);
                     printf("\n\n");
                     break;
@@ -363,7 +436,7 @@ int main () {
                     break;
                 } else {
                     playerNo[ID].moneyBet = 0;
-                    printf("player %d lost\n", ID);
+                    printf("%s lost\n", playerNo[ID].name);
                     printf("total money: %lf\n", playerNo[ID].totalMoney);
                     printf("\n\n");
                     break;
@@ -374,7 +447,7 @@ int main () {
                     break;
                 } else {
                     playerNo[ID].moneyBet = 0;
-                    printf("player %d lost\n", ID);
+                    printf("%s lost\n", playerNo[ID].name);
                     printf("total money: %lf\n", playerNo[ID].totalMoney);
                     printf("\n\n");
                     break;
@@ -382,6 +455,8 @@ int main () {
             }
         }
     }
+        }
+
     
     printf("would you like to fo again ? [y/n]\n");
     scanf("%c", &dec);
@@ -453,8 +528,7 @@ void initTable() {
 PLAYER winner (int ID, int mult, PLAYER playerNo) {
     printf("player %d win\nand won\n", ID);
     printf("%lf\n", playerNo.moneyBet * 2);
-    playerNo.totalMoney =
-            playerNo.totalMoney + (playerNo.moneyBet * mult);
+    playerNo.totalMoney = playerNo.totalMoney + (playerNo.moneyBet * mult);
     printf("total money: %lf\n", playerNo.totalMoney);
     playerNo.moneyBet = 0;
     printf("\n\n");

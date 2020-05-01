@@ -5,6 +5,7 @@
 #include <time.h> // we will use this library to get a random library with suystem clock
 #include <stdlib.h>
 
+#define MAX_NAME_LENGTH 15
 
 
 // here are the possible bet types
@@ -38,6 +39,7 @@ typedef struct {
 	double moneyBet; // the amount of money they bet
 	BETTYPE theType; // what type of bet they bet on
 	int spe; // if they are stupid and bet for a single number
+	char* name; // name of the each customer (used by the dealer)
 }PLAYER;
 
 
