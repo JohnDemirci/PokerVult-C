@@ -5,8 +5,6 @@
 #include <time.h> // we will use this library to get a random library with suystem clock
 #include <stdlib.h>
 
-#define MAX_NAME_LENGTH 15
-
 
 // here are the possible bet types
 // threads will choose one of them when they are placing their
@@ -44,8 +42,10 @@ typedef struct {
 
 
 
-void initTable();
+RESULT* initTable();
 PLAYER winner (int ID, int mult, PLAYER playerNo);
-void evenBlack(int lower, int upper);
-void evenRed(int lower, int upper);
+RESULT* evenRed(int lower, int upper, RESULT* table);
+RESULT* evenBlack(int lower, int upper, RESULT* table);
+BETTYPE bet(PLAYER playerNo);
+
 
