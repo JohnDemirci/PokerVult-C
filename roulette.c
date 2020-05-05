@@ -126,7 +126,7 @@ int main () {
             // will not like the dealer and
             // she will ask to speak to the manager of the casino
             if (strcmp(playerNo[id].name, "Karen") == 0) {
-                printf("Karen does not like the dealer %s \nshe would like to talk to the manager", playerNo[0].name);
+                printf("Karen does not like the dealer %s \nshe would like to talk to the manager\n", playerNo[0].name);
             }
             // this is a place for the goto statement to return
             tryagain:
@@ -165,12 +165,13 @@ int main () {
         // print out the result
         // and sleep(1) after each spin and slow down print stataements
         // so that people who are running the program can follow
-            if (id == 0) {
-                // our table is going to have 0---36 entries so we are going tet a
-                // random value within that range
-                spin = rand() % 36;
-                printf("\nResult: %d of %s\n", table[spin].number, table[spin].color);
-            }
+        if (id == 0) {
+            // our table is going to have 0---36 entries so we are going tet a
+            // random value within that range
+            spin = rand() % 36;
+			printf("\nResult: %d of %s\n", table[spin].number, table[spin].color);
+        }
+		#pragma omp barrier
         #pragma omp critical
         {
             // since the dealer did not bet 

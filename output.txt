@@ -320,9 +320,74 @@ and won
 total money: 17017181.230000
 
 
+_______________________________________________________
+___________________7th run_____________________________
+________________________________________________________
+
+
+ubuntu@ip-172-31-20-173:~/comp262/comp262serial$ ./roulette.o 
+
+you are in evenblack function
+
+you are in evenblack function
+
+you are in evenblack function
+
+you are in evenblack function
+Gabriel joined the table
+Gabriel is asking 11879481.000000 worth of chips
+Gabriel is asking too many chips
+Gabriel is asking 1884119.000000 worth of chips
+GRANTED!
+Gabriel is betting 979741.880000 on BLACKS
+Andrea joined the table
+Scott joined the table
+Scott is asking 3985158.000000 worth of chips
+GRANTED!
+Karen joined the table
+Karen does not like the dealer Kim 
+she would like to talk to the manager
+Karen is asking 11939596.000000 worth of chips
+Karen is asking too many chips
+Karen is asking 12187890.000000 worth of chips
+Karen is asking too many chips
+Karen is asking 8953886.000000 worth of chips
+GRANTED!
+John joined the table
+John is asking 3543631.000000 worth of chips
+GRANTED!
+Scott is betting 1753469.520000 EVENS
+Andrea is asking 5607175.000000 worth of chips
+GRANTED!
+Andrea is betting 885907.750000 on REDS
+Karen is betting 2148932.640000 on HALF2
+John is betting 1630070.260000 on DOZEN1
+Gabriel lost
+total money: 1884119.000000
 
 
 
+Result: 32 of RED
+John lost
+total money: 3543631.000000
+
+
+Scott wins
+and won
+3506939.040000
+total money: 7492097.040000
+
+
+Karen wins
+and won
+4297865.280000
+total money: 13251751.280000
+
+
+Andrea wins
+and won
+1771815.500000
+total money: 5315446.500000
 
 
 
