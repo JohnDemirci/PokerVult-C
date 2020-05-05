@@ -18,14 +18,6 @@ compiler normal way
 	type gcc -fopenmp roulette.c -o roulette.o
 	./roulette.o
 
-
-current iteration updates and what is there to fix
-	currently before we get the result we see that 
-	the print message of a thread losing or winning showing up before the result after spin
-	that needs to be fixed 
-
-	otherwise it seems to be solid
-
 */
 
 int main () {
@@ -129,6 +121,8 @@ int main () {
                 printf("Karen does not like the dealer %s \nshe would like to talk to the manager\n", playerNo[0].name);
             }
             // this is a place for the goto statement to return
+            // the return will happen if the player asks for more chips than it is allowed
+            // otherwise goto statement will not execute
             tryagain:
             // each thread will ask for chips worth of a random amount
             // in this case it is going to be between 100k - 13m
@@ -184,14 +178,27 @@ int main () {
             if (id != 0) {
             // based on the bet types we check fi they win or lose
             switch (playerNo[id].theType) {
+                // check case by case
                 case HALF2:
+                    // checking if the spin result is in the second half of the table
                     if (spin > 18 && spin <= 36) {
+                        // if it is then the player wins the bet
+                        // the casino loses money therefore the dealer gives the player
+                        // their money + their profit
+                        // the multiplier for bet type half2 is 2
+                        // we take the money out from the dealer
                         playerNo[0].totalMoney -= playerNo[id].moneyBet * 2;
+                        // give the money to the player
                         playerNo[id] = winner(id, 2, playerNo[id]);
+                        // after we are done we do not need to check anything else
+                        // break
                         break;
                     } else {
+                        // this code executes if the player lost the bet
+                        // the amount of money they bet is set to zero since the bet is over
                         playerNo[id].moneyBet = 0;
                         printf("%s lost\n", playerNo[id].name);
+                        // printing out the money left
                         printf("total money: %lf\n", playerNo[id].totalMoney);
                         printf("\n\n");
                         break;
@@ -211,8 +218,6 @@ int main () {
                     }
                 case EVEN:
                     if (spin % 2 == 0) {
-                        
-                        
                         playerNo[0].totalMoney -= playerNo[id].moneyBet * 2;
                         playerNo[id] = winner(id, 2, playerNo[id]);
                         break;
@@ -332,6 +337,8 @@ int main () {
                         break;
                     }
                 case SPECIFIC:
+                // the reason as to why we put specific to the last place is that since it is very unlikely to 
+                // have a specific bettype we do not want threads to waste their time by checking this case
                 // for the highly unlikely scenerio if a player bets on a specific number and win
                     if (spin == playerNo[id].spe) {
                         // dealer lose money
@@ -356,19 +363,45 @@ int main () {
     }
     free(playerNo);
     free(table);
-
-
 }
 
 
 
 RESULT* initTable() {
     // allocating space for the table
+    // total entries will be 37 0 .... 36 = 37
 	RESULT* table = (RESULT*)malloc(37 * sizeof(RESULT));
+
+
+    // table
+    //          0 G                     
+    // 1 R      2 B     3 R         |
+    // 4 B      5 R     6 B         |
+    // 7 R      8 B     9 R         |  HALF1
+    // 10 B     11 B    12 R        |
+    // 13 B     14 R    15 B        |
+    // 16 R     17 B    18 R        -
+    // 19 R     20 B    21 R        |
+    // 22 B     23 R    24 B        |
+    // 25 R     26 B    27 R        |  HALF2
+    // 28 B     29 B    30 R        |
+    // 31 B     32 R    33 B        |
+    // 34 R     35 B    36 R        |
+    //
+    // DOZEN1   DOZEN2  DOZEN3
+    //
+
+
+
+
+
+
+
     // there is no pattern for 0 so we will hardcode it
 	table[0].number = 0;
 	strcpy(table[0].color, "GREEN");
-
+    // we will be running some functions at the same time
+    // therefore we will be using sections
     #pragma omp parallel sections
     {
         #pragma omp section
@@ -384,7 +417,6 @@ RESULT* initTable() {
         #pragma omp section
         evenRed(29,37,table);
     }
-	
 	return table;
 }
 
@@ -409,9 +441,6 @@ RESULT* evenBlack(int lower, int upper, RESULT* table) {
         table[i].number = i;
         }
     }
-
-
-
 	return table;
 }
 
