@@ -80,7 +80,7 @@ int main () {
         // i will ask for a random name from 0-100
         // that random number is the index of the name i will choose
         // from the file
-        int randomName = rand() % 100;
+        int randomName = rand() % 135;
         // buffer for the word that is going to be read in the file
         char buffer[20];
         // reading the file word by word
@@ -138,7 +138,7 @@ int main () {
             // people can ask maximum of 13m worth of chips
             // However, they are only allowed for 10m
             chips = (rand() % (13000000 - 100000 + 1)) + 100000;
-            printf("%s is asking %lf worth of chips\n", playerNo[id].name, chips);
+            printf("%s is asking %lf worth of chips from the dealer %s\n", playerNo[id].name, chips, playerNo[0].name);
             if (chips > 10000000) {
                 printf("%s is asking too many chips\n", playerNo[id].name);
                 // if they ask more than 10m they go back to the tryagain line
@@ -158,6 +158,8 @@ int main () {
                 playerNo[id].theType = bet(playerNo[id]);
              }
         }
+
+        // putting a barrier here becasue otherwise result is printed way too early
         #pragma omp barrier
         // after each bet is made then it is time to spin
         // we spin and print out the result
@@ -171,6 +173,8 @@ int main () {
             spin = rand() % 36;
 			printf("\nResult: %d of %s\n", table[spin].number, table[spin].color);
         }
+        // putting a barrier here because otherwise sometimes result is printed after 
+        // win stataments
 		#pragma omp barrier
         #pragma omp critical
         {
@@ -180,18 +184,15 @@ int main () {
             if (id != 0) {
             // based on the bet types we check fi they win or lose
             switch (playerNo[id].theType) {
-                case SPECIFIC:
-                // for the highly unlikely scenerio if a player bets on a specific number and win
-                    if (spin == playerNo[id].spe) {
-                        // dealer lose money
-                        playerNo[0].totalMoney -= playerNo[id].moneyBet * 36;
-                        playerNo[id] = winner(id, 36, playerNo[id]);
-                        playerNo[id].spe = -1;
+                case HALF2:
+                    if (spin > 18 && spin <= 36) {
+                        playerNo[0].totalMoney -= playerNo[id].moneyBet * 2;
+                        playerNo[id] = winner(id, 2, playerNo[id]);
                         break;
                     } else {
-                        printf("%s lost\n", playerNo[id].name);
-                        printf("total money left: %lf\n", playerNo[id].totalMoney);
                         playerNo[id].moneyBet = 0;
+                        printf("%s lost\n", playerNo[id].name);
+                        printf("total money: %lf\n", playerNo[id].totalMoney);
                         printf("\n\n");
                         break;
                     }
@@ -330,15 +331,18 @@ int main () {
                         printf("\n\n");
                         break;
                     }
-                case HALF2:
-                    if (spin > 18 && spin <= 36) {
-                        playerNo[0].totalMoney -= playerNo[id].moneyBet * 2;
-                        playerNo[id] = winner(id,2, playerNo[id]);
+                case SPECIFIC:
+                // for the highly unlikely scenerio if a player bets on a specific number and win
+                    if (spin == playerNo[id].spe) {
+                        // dealer lose money
+                        playerNo[0].totalMoney -= playerNo[id].moneyBet * 36;
+                        playerNo[id] = winner(id, 36, playerNo[id]);
+                        playerNo[id].spe = -1;
                         break;
                     } else {
-                        playerNo[id].moneyBet = 0;
                         printf("%s lost\n", playerNo[id].name);
-                        printf("total money: %lf\n", playerNo[id].totalMoney);
+                        printf("total money left: %lf\n", playerNo[id].totalMoney);
+                        playerNo[id].moneyBet = 0;
                         printf("\n\n");
                         break;
                     }
