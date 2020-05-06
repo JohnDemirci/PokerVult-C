@@ -504,10 +504,7 @@ void loser (PLAYER* playerNo) {
     if (strcmp(playerNo->name, "Karen") == 0 ) {
         printf("%s thinks the dealer is cheating\n", playerNo->name);
         printf("She would like to talk to the manager again\n");
-        for (int i = 0 ; i < 3; i++) {
-            printf("%s is speaking to the manager\n", playerNo->name);
-            sleep(1);
-        }
+        printf("%s is speaking to the manager\n", playerNo->name);
         printf("%s is being escorded out\n", playerNo->name);
     }
     printf("\n\n");
