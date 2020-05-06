@@ -4,6 +4,7 @@
 #include <unistd.h>
 #include <time.h> // we will use this library to get a random library with suystem clock
 #include <stdlib.h>
+#include <locale.h>
 
 
 // here are the possible bet types
@@ -43,7 +44,7 @@ typedef struct {
 
 
 RESULT* initTable();
-PLAYER winner (int ID, int mult, PLAYER playerNo);
+PLAYER winner (int mult, PLAYER playerNo);
 RESULT* evenRed(int lower, int upper, RESULT* table);
 RESULT* evenBlack(int lower, int upper, RESULT* table);
 BETTYPE bet(PLAYER playerNo);
