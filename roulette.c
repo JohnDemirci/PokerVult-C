@@ -112,16 +112,22 @@ int main () {
 	playerNo[0].totalMoney = 10000000000000;
     // we ask a number of threads from the computer based on the number
     // of players we have
+
+    int count = -1;
+    
 	omp_set_num_threads(nPlayers);
     // entering a parallel region
 	#pragma omp parallel shared(spin)
 	{
+
         // teach thread will have their own personal id
 		int id = omp_get_thread_num();
         // we are assigning dealer to be thread id 0
         // since the dealer is not going to bet we want to 
         // exclude the dealer from making a bet
         // that is the reasoning behind the if id != 0 
+        begin:
+        #pragma omp barrier
 		if (id != 0) {
             // we welcome the thread to the table
             printf("%s joined the table\n", playerNo[id].name);
@@ -328,6 +334,14 @@ int main () {
                 }
             }
         }
+        #pragma omp barrier
+        if (id == 0) {
+            printf("run it back 1 for yes 0 for no\n");
+            scanf("%d", &playerNo[id].spe);
+        }
+        #pragma omp barrier
+        if (playerNo[0].spe == 1)
+            goto begin;
 	}
     // freeing space
     for (int i = 0 ; i < nPlayers; i++) {
