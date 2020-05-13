@@ -6,6 +6,10 @@
 #include <stdlib.h>
 #include <locale.h>
 
+// colorize the 
+#define KRED  "\x1B[31m" // red color
+#define KGRN  "\x1B[32m" // green color
+#define KWHT "\033[0m" // reset color
 
 // here are the possible bet types
 // threads will choose one of them when they are placing their

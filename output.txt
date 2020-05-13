@@ -1,316 +1,48 @@
-the program will be tested on 3 different operating systems
-
-Mac OS X Catalina
-Ubuntu 18.04
-Ubuntu 19.10
-
-Here are the results for Mac OS X Catalina
-
-Crixus joined the table
-Nathan joined the table
-Crixus is asking for $ 7,955,206.00 worth of chips from the dealer Ragnar
-Nathan is asking for $ 3,619,881.00 worth of chips from the dealer Ragnar
-GRANTED!
-Sasha joined the table
-Sasha is asking for $ 5,285,194.00 worth of chips from the dealer Ragnar
-GRANTED!
-GRANTED!
-Gabriel joined the table
-Gabriel is asking for $ 10,573,176.00 worth of chips from the dealer Ragnar
-Gabriel is asking too many chips
-Gabriel is asking for $ 160,114.00 worth of chips from the dealer Ragnar
-GRANTED!
-Nathan is betting $ 1,990,934.55 EVENS
-Sasha is betting $ 2,748,300.88 on DOZEN1
-Crixus betting $ 3,700,611.60 a specific 10
-Gabriel is betting $ 83,259.28 on DOZEN3
-
-Result: 14 of RED
-Sasha lost
-total money: $5,285,194.00
-
-
-Crixus lost
-total money left: $10,573,176.00
-
-
-Gabriel lost
-total money: $160,114.00
-
-
-Nathan wins
-and won $3,981,869.10
-total money: $7,601,750.10
-
----------------------------------------------------------------------
----------------------------------------------------------------------
-
 Johns-MacBook-Pro:comp262serial johndemirci$ ./roulette.o 
-Lina joined the table
-Leonard joined the table
-Leonard is asking for $ 3,143,297.00 worth of chips from the dealer Karen
+Sebastian joined the table
+Giovanni joined the table
+Sebastian is asking for $ 7,821,136.00 worth of chips from the dealer Jeremy
 GRANTED!
-Lina is asking for $ 8,595,928.00 worth of chips from the dealer Karen
+Giovanni is asking for $ 7,821,136.00 worth of chips from the dealer Jeremy
 GRANTED!
-Lina is betting $ 1,194,452.86 EVENS
-Karen joined the table
-Leonard is betting $ 1,508,782.56 on HALF1
-Karen does not like the dealer Karen 
-She would like to talk to the manager
-Karen is asking for $ 8,169,666.00 worth of chips from the dealer Karen
+Sebastian is betting $ 2,346,340.80 on 25-36
+Giovanni is betting $ 1,642,438.56 on 1-12
+
+Result: 15 of BLACK
+Giovanni lost
+Profit: - $1,642,438.56
+total money left: $7,821,136.00
+
+
+Sebastian lost
+Profit: - $2,346,340.80
+total money left: $7,821,136.00
+
+
+press 1 to run it back
+1
+Sebastian joined the table
+Giovanni joined the table
+Giovanni is asking for $ 11,695,815.00 worth of chips from the dealer Jeremy
+Giovanni is asking too many chips
+Giovanni is asking for $ 7,046,008.00 worth of chips from the dealer Jeremy
 GRANTED!
-Karen is betting $ 3,676,349.70 on HALF1
-
-Result: 28 of BLACK
-Leonard lost
-total money: $3,143,297.00
-
-
-Karen lost
-total money: $8,169,666.00
-
-
-Lina wins
-and won $2,388,905.72
-total money: $5,532,202.72
-
----------------------------------------------------------------------
----------------------------------------------------------------------
-
-Johns-MacBook-Pro:comp262serial johndemirci$ ./roulette.o 
-Jericho joined the table
-Jose joined the table
-Jose is asking for $ 3,109,212.00 worth of chips from the dealer Emma
+Sebastian is asking for $ 11,447,335.00 worth of chips from the dealer Jeremy
 GRANTED!
-Gabriel joined the table
-Karen joined the table
-Gabriel is asking for $ 1,267,725.00 worth of chips from the dealer Emma
-GRANTED!
-Finn joined the table
-Finn is asking for $ 1,476,744.00 worth of chips from the dealer Emma
-GRANTED!
-Karen does not like the dealer Emma 
-She would like to talk to the manager
-Karen is asking for $ 1,398,637.00 worth of chips from the dealer Emma
-GRANTED!
-Antoine joined the table
-Jericho is asking for $ 11,026,945.00 worth of chips from the dealer Emma
-GRANTED!
-Jose is betting $ 1,368,053.28 on REDS
-Antoine is asking for $ 545,394.00 worth of chips from the dealer Emma
-GRANTED!
-Gabriel is betting $ 304,254.00 on HALF2
-Finn is betting $ 369,186.00 on 25-36
-Karen is betting $ 699,318.50 EVENS
-Jericho is betting $ 223,611.54 on 25-36
-Antoine is betting $ 294,512.76 on ODDS
-
-Result: 7 of RED
-Jericho lost
-total money: $545,394.00
-
-
-Gabriel lost
-total money: $1,267,725.00
-
-
-Jose wins
-and won $2,736,106.56
-total money: $5,845,318.56
-
-
-Karen lost
-total money: $1,398,637.00
-
-
-Finn lost
-total money: $1,476,744.00
-
-
-Antoine wins
-and won $589,025.52
-total money: $1,134,419.52
-
-
----------------------------------------------------------------------
----------------------------------------------------------------------
-
-
-Johns-MacBook-Pro:comp262serial johndemirci$ ./roulette.o 
-Ruben joined the table
-Michael joined the table
-Michael is asking for $ 5,578,410.00 worth of chips from the dealer Anna
-GRANTED!
-Ruben is asking for $ 2,171,634.00 worth of chips from the dealer Anna
-GRANTED!
-Michael is betting $ 2,175,579.90 on ODDS
-Ruben is betting $ 2,844,989.10 on HALF1
-
-Result: 16 of RED
-Ruben wins
-and won $5,689,978.20
-total money: $11,268,388.20
-
-
-Michael lost
-total money: $5,578,410.00
-
----------------------------------------------------------------------
----------------------------------------------------------------------
-
-
-Johns-MacBook-Pro:comp262serial johndemirci$ ./roulette.o 
-Leonard joined the table
-Saxa joined the table
-Saxa is asking for $ 863,297.00 worth of chips from the dealer Christina
-GRANTED!
-Steven joined the table
-Steven is asking for $ 4,515,217.00 worth of chips from the dealer Christina
-GRANTED!
-Candice joined the table
-Candice is asking for $ 8,925,208.00 worth of chips from the dealer Christina
-GRANTED!
-Yvonne joined the table
-Yvonne is asking for $ 5,671,063.00 worth of chips from the dealer Christina
-GRANTED!
-Saxa is betting $ 181,292.37 EVENS
-Jason joined the table
-Jason is asking for $ 6,098,073.00 worth of chips from the dealer Christina
-GRANTED!
-Leonard is asking for $ 12,879,103.00 worth of chips from the dealer Christina
-GRANTED!
-Steven is betting $ 1,580,325.95 EVENS
-Candice is betting $ 4,462,604.00 on HALF1
-Yvonne is betting $ 964,080.71 on DOZEN3
-Jason is betting $ 2,866,094.31 EVENS
-Leonard is betting $ 1,097,653.14 on REDS
-
-Result: 14 of RED
-Candice wins
-and won $8,925,208.00
-total money: $17,850,416.00
-
-
-Saxa wins
-and won $362,584.74
-total money: $1,225,881.74
-
-
-Leonard wins
-and won $2,195,306.28
-total money: $8,293,379.28
-
-
-Steven wins
-and won $3,160,651.90
-total money: $7,675,868.90
-
-
-Yvonne lost
-total money: $5,671,063.00
-
-
-Jason wins
-and won $5,732,188.62
-total money: $11,830,261.62
-
----------------------------------------------------------------------
----------------------------------------------------------------------
-
-
-Johns-MacBook-Pro:comp262serial johndemirci$ ./roulette.o 
-Khloe joined the table
-Karen joined the table
-Karen does not like the dealer Marek 
-She would like to talk to the manager
-Karen is asking for $ 6,887,747.00 worth of chips from the dealer Marek
-GRANTED!
-Robert joined the table
-Karen is betting $ 2,548,466.39 EVENS
-Khloe is asking for $ 8,686,388.00 worth of chips from the dealer Marek
-Khloe is asking too many chips
-Khloe is asking for $ 186,885.00 worth of chips from the dealer Marek
-GRANTED!
-Robert is asking for $ 12,162,055.00 worth of chips from the dealer Marek
-GRANTED!
-Brida joined the table
-Leonard joined the table
-Khloe is betting $ 91,573.65 on 25-36
-Leonard is asking for $ 12,683,758.00 worth of chips from the dealer Marek
-GRANTED!
-Brida is asking for $ 1,277,671.00 worth of chips from the dealer Marek
-GRANTED!
-Robert is betting $ 35,508.15 on DOZEN3
-Andrea joined the table
-Andrea is asking for $ 8,180,278.00 worth of chips from the dealer Marek
-GRANTED!
-Leonard is betting $ 626,058.79 EVENS
-Brida is betting $ 447,184.85 on 25-36
-Andrea is betting $ 2,863,097.30 EVENS
+Giovanni is betting $ 2,113,802.40 on ODDS
+Sebastian is betting $ 1,620,581.84 on HALF2
 
 Result: 29 of BLACK
-Karen lost
-total money: $6,887,747.00
+Giovanni wins
+Profit: + $4,227,604.80
+total money: $11,273,612.80
 
 
-Andrea lost
-total money: $8,180,278.00
+Sebastian wins
+Profit: + $3,241,163.68
+total money: $10,287,171.68
 
 
-Khloe wins
-and won $183,147.30
-total money: $461,605.95
-
-
-Brida wins
-and won $894,369.70
-total money: $2,619,225.55
-
-
-Robert lost
-total money: $186,885.00
-
-
-Leonard lost
-total money: $1,277,671.00
-
----------------------------------------------------------------------
----------------------------------------------------------------------
-
-Johns-MacBook-Pro:comp262serial johndemirci$ ./roulette.o 
-Felix joined the table
-Lorenzo joined the table
-Lorenzo is asking for $ 6,125,054.00 worth of chips from the dealer Leonard
-GRANTED!
-Julian joined the table
-Felix is asking for $ 1,123,456.00 worth of chips from the dealer Leonard
-GRANTED!
-Lorenzo is betting $ 3,246,278.62 on REDS
-Achillies joined the table
-Achillies is asking for $ 3,013,120.00 worth of chips from the dealer Leonard
-Felix betting $ 2,743,364.40 a specific 29
-Julian is asking for $ 6,531,820.00 worth of chips from the dealer Leonard
-GRANTED!
-Julian is betting $ 1,084,723.20 on DOZEN2
-GRANTED!
-Achillies is betting $ 723,148.80 on DOZEN1
-
-Result: 10 of BLACK
-Felix lost
-total money left: $6,531,820.00
-
-
-Lorenzo lost
-total money: $6,125,054.00
-
-
-Achillies wins
-and won $1,446,297.60
-total money: $5,182,566.40
-
-
-Julian lost
-total money: $3,013,120.00
-
-
-
+press 1 to run it back
+0
+Johns-MacBook-Pro:comp262serial johndemirci$ 

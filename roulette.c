@@ -24,9 +24,7 @@ compiler normal way
 
 */
 
-#define KRED  "\x1B[31m" // red color
-#define KGRN  "\x1B[32m" // green color
-#define KWHT "\033[0m" // reset color
+
 
 int main () {
     // this line of code will allow us to print out the money with commas rather than unreadable doubles
@@ -113,7 +111,7 @@ int main () {
     // we ask a number of threads from the computer based on the number
     // of players we have
 
-    int count = -1;
+    // int count = -1;
     
 	omp_set_num_threads(nPlayers);
     // entering a parallel region
@@ -170,6 +168,8 @@ int main () {
                 playerNo[id].theType = bet(playerNo[id]);
              }
         }
+
+
 
         // putting a barrier here becasue otherwise result is printed way too early
         #pragma omp barrier
@@ -336,7 +336,7 @@ int main () {
         }
         #pragma omp barrier
         if (id == 0) {
-            printf("run it back 1 for yes 0 for no\n");
+            printf("press 1 to run it back\n");
             scanf("%d", &playerNo[id].spe);
         }
         #pragma omp barrier
@@ -442,15 +442,18 @@ RESULT* evenRed(int lower, int upper, RESULT* table) {
 
 
 BETTYPE bet (PLAYER playerNo) {
-    // as we said we want to make tis very realistic
-    // we do not want the players to bet on specific  numbers
-    // becasue in real world it is not very likely
-    // for that realoons we are implementing a roulette wheel algorithm
-    // for this we will get a random vlaue betweem 0 - 130
-    // if the random value is < 5 which is going to be very unlikely
-    // person will bet on a specific number
-    // with this while it is not impossible players will more likely
-    // to bet on other bet types to win
+    /**
+     * 
+     * since we do not want the likelihood of of the threads to bet on specific numbers
+     * to be the same as other options which would be more ikely to be profitable
+     * that is why we are implementing a roulette wheel algorithm
+     * we will get a random value in range 0 - 130
+     * if the random value is less than 5 we will give it to specific bet
+     * otherwise we will distribute evenly on the other bets
+     * 
+     * 
+     *
+     * */
 	int dummyType = rand() % 130;
 	if (dummyType < 5) {
 		playerNo.theType = SPECIFIC;
