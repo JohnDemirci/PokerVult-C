@@ -1,48 +1,322 @@
-Johns-MacBook-Pro:comp262serial johndemirci$ ./roulette.o 
-Sebastian joined the table
+Gizem joined the table
+Gizem is asking for $ 278,618.00 worth of chips from the dealer Hulya
+GRANTED!
+Gizem is betting $ 86,371.58 on DOZEN3
+Nana joined the table
+Nana is asking for $ 7,151,114.00 worth of chips from the dealer Hulya
+GRANTED!
+Nana is betting $ 1,501,733.94 on BLACKS
+Novak joined the table
+Novak is asking for $ 8,982,488.00 worth of chips from the dealer Hulya
+GRANTED!
+Novak is betting $ 4,491,244.00 on ODDS
 Giovanni joined the table
-Sebastian is asking for $ 7,821,136.00 worth of chips from the dealer Jeremy
+Giovanni is asking for $ 3,213,052.00 worth of chips from the dealer Hulya
 GRANTED!
-Giovanni is asking for $ 7,821,136.00 worth of chips from the dealer Jeremy
-GRANTED!
-Sebastian is betting $ 2,346,340.80 on 25-36
-Giovanni is betting $ 1,642,438.56 on 1-12
+Giovanni is betting $ 899,654.56 on HALF1
 
-Result: 15 of BLACK
+Result: 35 of BLACK
+Gizem lost
+Profit: - $86,371.58
+total money left: $192,246.42
+
+
+Nana wins
+Profit: + $1,501,733.94
+total money: $8,652,847.94
+
+
+Novak wins
+Profit: + $4,491,244.00
+total money: $13,473,732.00
+
+
 Giovanni lost
-Profit: - $1,642,438.56
-total money left: $7,821,136.00
+Profit: - $899,654.56
+total money left: $2,313,397.44
 
 
-Sebastian lost
-Profit: - $2,346,340.80
-total money left: $7,821,136.00
+press 1 to run it back
+0     
+john@john-VirtualBox:~/Documents/comp262serial$ ./roulette.o 
+Marcus joined the table
+Marcus is asking for $ 9,162,371.00 worth of chips from the dealer Louise
+GRANTED!
+Marcus is betting $ 4,123,066.95 on DOZEN2
+Finan joined the table
+Finan is asking for $ 4,270,411.00 worth of chips from the dealer Louise
+GRANTED!
+Finan is betting $ 1,793,572.62 on ODDS
+Antoine joined the table
+Antoine is asking for $ 3,200,658.00 worth of chips from the dealer Louise
+GRANTED!
+Antoine is betting $ 960,197.40 on DOZEN2
+Marek joined the table
+Marek is asking for $ 12,824,495.00 worth of chips from the dealer Louise
+Marek is asking too many chips
+Marek is asking for $ 6,814,945.00 worth of chips from the dealer Louise
+GRANTED!
+Marek is betting $ 2,930,426.35 on DOZEN2
+Burcu joined the table
+Burcu is asking for $ 6,366,623.00 worth of chips from the dealer Louise
+GRANTED!
+Burcu is betting $ 2,928,646.58 on 1-12
+
+Result: 6 of BLACK
+Marcus lost
+Profit: - $4,123,066.95
+total money left: $5,039,304.05
+
+
+Antoine lost
+Profit: - $960,197.40
+total money left: $2,240,460.60
+
+
+Marek lost
+Profit: - $2,930,426.35
+total money left: $3,884,518.65
+
+
+Burcu wins
+Profit: + $5,857,293.16
+total money: $12,223,916.16
+
+
+Finan lost
+Profit: - $1,793,572.62
+total money left: $2,476,838.38
 
 
 press 1 to run it back
 1
-Sebastian joined the table
-Giovanni joined the table
-Giovanni is asking for $ 11,695,815.00 worth of chips from the dealer Jeremy
-Giovanni is asking too many chips
-Giovanni is asking for $ 7,046,008.00 worth of chips from the dealer Jeremy
-GRANTED!
-Sebastian is asking for $ 11,447,335.00 worth of chips from the dealer Jeremy
-GRANTED!
-Giovanni is betting $ 2,113,802.40 on ODDS
-Sebastian is betting $ 1,620,581.84 on HALF2
+Antoine is betting $ 560,115.15 on REDS
+Marek is betting $ 1,786,878.58 EVENS
+Burcu is betting $ 6,234,197.24 on ODDS
+Finan is betting $ 817,356.67 on HALF1
+Marcus is betting $ 2,015,721.62 on HALF2
 
-Result: 29 of BLACK
-Giovanni wins
-Profit: + $4,227,604.80
-total money: $11,273,612.80
+Result: 2 of BLACK
+Finan wins
+Profit: + $817,356.67
+total money: $3,294,195.05
 
 
-Sebastian wins
-Profit: + $3,241,163.68
-total money: $10,287,171.68
+Antoine lost
+Profit: - $560,115.15
+total money left: $1,680,345.45
+
+
+Marek wins
+Profit: + $1,786,878.58
+total money: $5,671,397.23
+
+
+Burcu lost
+Profit: - $6,234,197.24
+total money left: $5,989,718.92
+
+
+Marcus lost
+Profit: - $2,015,721.62
+total money left: $3,023,582.43
 
 
 press 1 to run it back
 0
-Johns-MacBook-Pro:comp262serial johndemirci$ 
+john@john-VirtualBox:~/Documents/comp262serial$ ./roulette.o 
+Karen joined the table
+Karen does not like the dealer Jose 
+She would like to talk to the manager
+Karen is asking for $ 3,242,151.00 worth of chips from the dealer Jose
+GRANTED!
+Karen betting $ 907,802.28 a specific 12
+Eefje joined the table
+Eefje is asking for $ 12,506,745.00 worth of chips from the dealer Jose
+Eefje is asking too many chips
+Eefje is asking for $ 3,325,031.00 worth of chips from the dealer Jose
+GRANTED!
+Eefje is betting $ 1,363,262.71 on 13-24
+Karen joined the table
+Karen does not like the dealer Jose 
+She would like to talk to the manager
+Karen is asking for $ 6,647,318.00 worth of chips from the dealer Jose
+GRANTED!
+Karen is betting $ 2,658,927.20 on ODDS
+
+Result: 31 of BLACK
+Eefje lost
+Profit: - $1,363,262.71
+total money left: $1,961,768.29
+
+
+Karen wins
+Profit: + $2,658,927.20
+total money: $9,306,245.20
+
+
+Karen lost
+Profit: - $907,802.28
+total money left: $2,334,348.72
+Karen thinks the dealer is cheating
+She would like to talk to the manager again
+Karen is speaking to the manager
+Karen is being escorded out
+
+
+press 1 to run it back
+1
+Eefje is betting $ 647,383.54 on REDS
+Karen is betting $ 2,698,811.11 EVENS
+Karen is betting $ 630,274.15 on 1-12
+
+Result: 1 of RED
+Eefje wins
+Profit: + $647,383.54
+total money: $2,609,151.83
+
+
+Karen lost
+Profit: - $2,698,811.11
+total money left: $6,607,434.09
+Karen thinks the dealer is cheating
+She would like to talk to the manager again
+Karen is speaking to the manager
+Karen is being escorded out
+
+
+Karen wins
+Profit: + $1,260,548.31
+total money: $3,594,897.03
+
+
+press 1 to run it back
+0
+john@john-VirtualBox:~/Documents/comp262serial$ ./roulette.o 
+Samra joined the table
+Samra is asking for $ 3,454,233.00 worth of chips from the dealer Ahmad
+GRANTED!
+Samra is betting $ 725,388.93 on 13-24
+Bianca joined the table
+Bianca is asking for $ 4,622,183.00 worth of chips from the dealer Ahmad
+GRANTED!
+Bianca is betting $ 785,771.11 on 1-12
+Karen joined the table
+Karen does not like the dealer Ahmad 
+She would like to talk to the manager
+Karen is asking for $ 4,735,116.00 worth of chips from the dealer Ahmad
+GRANTED!
+Karen is betting $ 757,618.56 on HALF2
+Karen joined the table
+Karen does not like the dealer Ahmad 
+She would like to talk to the manager
+Karen is asking for $ 6,446,607.00 worth of chips from the dealer Ahmad
+GRANTED!
+Karen is betting $ 2,900,973.15 on HALF1
+Sam joined the table
+Sam is asking for $ 12,662,550.00 worth of chips from the dealer Ahmad
+Sam is asking too many chips
+Sam is asking for $ 3,760,476.00 worth of chips from the dealer Ahmad
+GRANTED!
+Sam is betting $ 1,805,028.48 on DOZEN1
+
+Result: 19 of RED
+Samra wins
+Profit: + $1,450,777.86
+total money: $4,905,010.86
+
+
+Karen wins
+Profit: + $757,618.56
+total money: $5,492,734.56
+
+
+Karen lost
+Profit: - $2,900,973.15
+total money left: $3,545,633.85
+Karen thinks the dealer is cheating
+She would like to talk to the manager again
+Karen is speaking to the manager
+Karen is being escorded out
+
+
+Sam wins
+Profit: + $3,610,056.96
+total money: $7,370,532.96
+
+
+Bianca lost
+Profit: - $785,771.11
+total money left: $3,836,411.89
+
+
+press 1 to run it back
+0
+john@john-VirtualBox:~/Documents/comp262serial$ ./roulette.o 
+Gianluca joined the table
+Gianluca is asking for $ 11,659,439.00 worth of chips from the dealer Ruth
+Gianluca is asking too many chips
+Gianluca is asking for $ 8,761,163.00 worth of chips from the dealer Ruth
+GRANTED!
+Gianluca is betting $ 2,978,795.42 on 1-12
+Julian joined the table
+Julian is asking for $ 7,588,267.00 worth of chips from the dealer Ruth
+GRANTED!
+Julian is betting $ 2,276,480.10 on 25-36
+Karen joined the table
+Karen does not like the dealer Ruth 
+She would like to talk to the manager
+Karen is asking for $ 9,899,719.00 worth of chips from the dealer Ruth
+GRANTED!
+Karen is betting $ 3,761,893.22 on HALF2
+Ozan joined the table
+Ozan is asking for $ 1,280,152.00 worth of chips from the dealer Ruth
+GRANTED!
+Ozan is betting $ 652,877.52 on 1-12
+Nancy joined the table
+Nancy is asking for $ 4,199,771.00 worth of chips from the dealer Ruth
+GRANTED!
+Nancy is betting $ 2,183,880.92 on 13-24
+Dora joined the table
+Dora is asking for $ 627,196.00 worth of chips from the dealer Ruth
+GRANTED!
+Dora is betting $ 344,957.80 on DOZEN2
+
+Result: 6 of BLACK
+Gianluca wins
+Profit: + $5,957,590.84
+total money: $14,718,753.84
+
+
+Julian lost
+Profit: - $2,276,480.10
+total money left: $5,311,786.90
+
+
+Dora lost
+Profit: - $344,957.80
+total money left: $282,238.20
+
+
+Karen lost
+Profit: - $3,761,893.22
+total money left: $6,137,825.78
+Karen thinks the dealer is cheating
+She would like to talk to the manager again
+Karen is speaking to the manager
+Karen is being escorded out
+
+
+Ozan wins
+Profit: + $1,305,755.04
+total money: $2,585,907.04
+
+
+Nancy lost
+Profit: - $2,183,880.92
+total money left: $2,015,890.08
+
+
+press 1 to run it back
+0
+
