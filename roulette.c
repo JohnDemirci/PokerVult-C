@@ -125,7 +125,6 @@ int main () {
         // exclude the dealer from making a bet
         // that is the reasoning behind the if id != 0 
         begin:
-        #pragma omp barrier
 		if (id != 0) {
             // we welcome the thread to the table
             printf("%s joined the table\n", playerNo[id].name);
@@ -159,14 +158,13 @@ int main () {
                 playerNo[id].totalMoney = chips;
                 playerNo[0].totalMoney -= playerNo[id].totalMoney;
             }
+            newBegin:
             // if you do not know what this line is then go back tp the percent decleration
              percent = (rand() % (55 - 15 + 1)) + 15;
              // line below will take the percentage of the total money
              playerNo[id].moneyBet = (playerNo[id].totalMoney * percent)/100;
-             #pragma omp critical
-             {
-                playerNo[id].theType = bet(playerNo[id]);
-             }
+             playerNo[id].totalMoney -= playerNo[id].moneyBet; 
+            playerNo[id].theType = bet(playerNo[id]);
         }
 
 
@@ -340,8 +338,12 @@ int main () {
             scanf("%d", &playerNo[id].spe);
         }
         #pragma omp barrier
-        if (playerNo[0].spe == 1)
-            goto begin;
+        if (playerNo[0].spe == 1) {
+            if (id == 0)
+                goto begin;
+            else 
+                goto newBegin;
+        }
 	}
     // freeing space
     for (int i = 0 ; i < nPlayers; i++) {
@@ -506,7 +508,9 @@ BETTYPE bet (PLAYER playerNo) {
 // fore submission of the final project it will be removed
 // mult is the multiplier of the bet amount
 void winner (int mult, PLAYER* playerNo) {
-    printf("%s wins\n%sProfit: + $%'.2lf\n%s", playerNo->name,KGRN, playerNo->moneyBet * 2, KWHT);
+    double profit;
+    profit = playerNo->moneyBet * mult - playerNo->moneyBet;
+    printf("%s wins\n%sProfit: + $%'.2lf\n%s", playerNo->name,KGRN, profit, KWHT);
     playerNo->totalMoney = playerNo->totalMoney + (playerNo->moneyBet * mult);
     printf("total money: $%'.2lf\n", playerNo->totalMoney);
     playerNo->moneyBet = 0;
@@ -516,6 +520,7 @@ void winner (int mult, PLAYER* playerNo) {
 
 void loser (PLAYER* playerNo) {
     printf("%s lost\n%sProfit: - $%'.2lf\n%s", playerNo->name, KRED, playerNo->moneyBet, KWHT);
+    // playerNo->totalMoney = playerNo->totalMoney - (playerNo->moneyBet);
     printf("total money left: $%'.2lf\n", playerNo->totalMoney);
     playerNo->moneyBet = 0;
     if (strcmp(playerNo->name, "Karen") == 0 ) {
